@@ -1,0 +1,100 @@
+CREATE TABLE IF NOT EXISTS `t_students` (
+  `stu_id`     INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+  COMMENT '学生id',
+  `stu_name`   VARCHAR(255) NOT NULL
+  COMMENT '学生姓名',
+  `birthday`   DATE COMMENT '学生出生日期',
+  `stu_gender` VARCHAR(10) COMMENT '学生性别'
+)
+  COMMENT '学生表';
+
+CREATE TABLE IF NOT EXISTS `t_courses` (
+  `course_id`   INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+  COMMENT '课程id',
+  `course_name` VARCHAR(255) NOT NULL
+  COMMENT '课程名称',
+  `teacher_id`  INT UNSIGNED COMMENT '教师id'
+)
+  COMMENT '课程表';
+
+CREATE TABLE IF NOT EXISTS `t_teachers` (
+  `teacher_id`   INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+  COMMENT '教师id',
+  `teacher_name` VARCHAR(255) NOT NULL
+  COMMENT '教师姓名'
+)
+  COMMENT '教师表';
+
+CREATE TABLE IF NOT EXISTS `t_score` (
+  `score_id`  INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT
+  COMMENT '分数id',
+  `stu_id`    INT UNSIGNED NOT NULL
+  COMMENT '学生id',
+  `course_id` INT UNSIGNED NOT NULL
+  COMMENT '课程id',
+  `score`     INT                               DEFAULT 0
+  COMMENT '分数'
+)
+  COMMENT '分数表';
+
+ALTER TABLE `t_score`
+  ADD CONSTRAINT `fk_t_score_t_students_stu_id_fk`
+FOREIGN KEY (`stu_id`)
+REFERENCES `t_students` (`stu_id`)
+  ON DELETE NO ACTION
+  ON UPDATE CASCADE;
+
+ALTER TABLE `t_score`
+  ADD CONSTRAINT `t_score_t_courses_course_id_fk`
+FOREIGN KEY (`course_id`)
+REFERENCES `t_courses` (`course_id`)
+  ON DELETE NO ACTION
+  ON UPDATE CASCADE;
+
+ALTER TABLE `t_courses`
+  ADD CONSTRAINT `t_courses_t_teachers_teacher_id_fk`
+FOREIGN KEY (`teacher_id`)
+REFERENCES `t_teachers` (`teacher_id`)
+  ON DELETE NO ACTION
+  ON UPDATE CASCADE;
+  
+  
+INSERT INTO t_students (stu_name, birthday, stu_gender) VALUES
+  ('赵雷', '1990-01-01', '男'),
+  ('钱电', '1990-12-21', '男'),
+  ('孙风', '1990-05-20', '男'),
+  ('李云', '1990-08-06', '男'),
+  ('周梅', '1991-12-01', '女'),
+  ('吴兰', '1992-03-01', '女'),
+  ('郑竹', '1989-07-01', '女'),
+  ('王菊', '1990-01-20', '女');
+
+INSERT INTO t_teachers (teacher_name) VALUES
+  ('孙悟空'),
+  ('贝吉塔'),
+  ('特兰克斯');
+
+INSERT INTO t_courses (course_name, teacher_id) VALUES
+  ('语文', 2),
+  ('数学', 1),
+  ('英语', 3);
+
+INSERT INTO t_score (stu_id, course_id, score) VALUES
+  (1, 1, 80),
+  (1, 2, 90),
+  (1, 3, 99),
+  (2, 1, 70),
+  (2, 2, 60),
+  (2, 3, 80),
+  (3, 1, 80),
+  (3, 2, 80),
+  (3, 3, 80),
+  (4, 1, 50),
+  (4, 2, 30),
+  (4, 3, 20),
+  (5, 1, 76),
+  (5, 2, 87),
+  (6, 1, 31),
+  (6, 3, 34),
+  (7, 2, 89),
+  (7, 3, 98);
